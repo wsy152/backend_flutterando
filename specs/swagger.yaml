@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  description: "API system"
+  version: "1.0.0"
+  title: Semana BackEnd"
+servers:
+  - url: http://localhost:6262
+    description: Remote server
+tags:
+  - name: "user"
+    description: "Access to User"
+
+paths:
+  /user:
+    get:
+      tags:
+        - "user"
+      description: get all users
+      responses:
+        "200":
+          description: "get all users"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "404":
+          description: "get all users"
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/UserException"
+    post:
+      tags:
+        - "user"
+      description: create new user 
+      responses:
+        "200":
+          description: ""
+          content:
+             application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "404":
+          description: "get all users"
+          content:
+             application/json:
+              schema:
+               type: object
+               $ref: "#/components/schemas/UserException"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          default: user
+          enum:
+            - "dev"
+            - "admin"
+
+    UserException:
+      type: object
+      properties:
+        error:
+          type: string

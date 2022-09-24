@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:postgres/postgres.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
-import '../../cores/services/dot_env/dot_env_service.dart';
+import '../../dot_env/dot_env_service.dart';
 import '../remote_database.dart';
 
 class PostgresDatabase implements RemoteDatabase, Disposable {
@@ -34,7 +34,7 @@ class PostgresDatabase implements RemoteDatabase, Disposable {
 
   @override
   Future<List<Map<String, Map<String, dynamic>>>> query(String queryText,
-      {Map<String, String> variables = const {}}) async {
+      {Map<String, dynamic> variables = const {}}) async {
     final connection = await completer.future;
     return await connection.mappedResultsQuery(queryText,
         substitutionValues: variables);

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-
-import 'package:backend_flutterando/src/database/remote_database.dart';
+import 'package:backend_flutterando/src/cores/services/bcrypt/bcrypt_service.dart';
+import 'package:backend_flutterando/src/cores/services/database/remote_database.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';
 
@@ -36,14 +36,40 @@ class UserResource extends Resource {
     return Response.ok(jsonEncode(userMap));
   }
 
-  FutureOr<Response> _createUser(ModularArguments args) {
-    return Response.ok(args.data);
+  FutureOr<Response> _createUser(ModularArguments args,Injector injector) async{
+
+    final bcrypt = injector.get<BCryptService>();
+
+
+      final userParams = (args.data as Map).cast<String, dynamic>();
+
+       userParams['password'] = bcrypt.generatehash(userParams['password']);
+       
+      userParams.remove('id');
+
+      final database = injector.get<RemoteDatabase>();
+      final result = await database.query('INSERT INTO "User" (name, email) VALUES(@name, @email) RETURNING id,name,email,role;',variables: userParams);
+      final userMap = result.map((e) => e['User']).first;
+    return Response.ok(jsonEncode(userMap));
   }
 
-  FutureOr<Response> _updateUser(ModularArguments args) {
-    return Response.ok(args.data);
+  FutureOr<Response> _updateUser(ModularArguments args,Injector injector) async{
+          final userParams = (args.data as Map).cast<String, dynamic>();
+      userParams.remove('id');
+
+      final database = injector.get<RemoteDatabase>();
+      final result = await database.query('UPDATE INTO "User" (name, email) VALUES(@name, @email) RETURNING id,name,email,role;',variables: userParams);
+      final userMap = result.map((e) => e['User']).first;
+    return Response.ok(jsonEncode(userMap));
   }
-    FutureOr<Response> _deleteUser(ModularArguments args) {
-    return Response.ok(args.params['id']);
+    FutureOr<Response> _deleteUser(ModularArguments args,Injector injector) async{
+      final id = args.params ['id'];
+      final database = injector.get<RemoteDatabase>();
+      await database.query('DELETE FROM "User" WHERE id = @id;',variables: {
+        'id':id
+
+      });
+
+    return Response.ok(jsonEncode({'message': 'deleted $id'}));
   }
 }
