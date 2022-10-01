@@ -3,16 +3,62 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  name     String?
-  password String?
-  role    Role     @default(USER)
 
+model EntityPerson {
+  id           Int      @id @default(autoincrement())
+  fistName     String?
+  personType   String?
+  email        String?  @unique
+  
+  
+
+}
+
+model Users {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  fistName     String?
+  lastName     String?
+  password     String?
+  active       Int
+  docCpf       String   @unique
+  docRg        String?
+  modified     String?
+  created      String
+
+  role    Role     @default(USER)
 }
 
 enum Role {
   USER
   ADMIN
 }
+
+model Customers {
+  id              Int  @id @default(autoincrement())
+  customerName    String
+  nickName        String?
+  active          Int
+  modified        String?
+  created         String
+  customerEmails  CustomerEmails[] @relation("11")
+}
+
+model CustomerEmails{
+  id                 Int  @id @default(autoincrement())
+  email              String @unique
+  active             Int
+  modified           String?
+  created            String
+  customer           Customers? @relation("11", fields:[customerId], references: [id])
+  customerId         Int
+  departmentEmail    DepartmentEmail[]
+}
+model DepartmentEmail {
+  id                     Int  @id @default(autoincrement())
+  description            String
+  customerEmail          CustomerEmails @relation(fields:[customerEmailId], references: [id])
+  customerEmailId        Int
+}
+
+

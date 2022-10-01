@@ -1,7 +1,6 @@
 
 import 'package:backend_flutterando/src/cores/services/jwt/jwt_service.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:shelf/shelf_io.dart';
 
 import '../../dot_env/dot_env_service.dart';
 
