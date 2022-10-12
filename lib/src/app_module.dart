@@ -2,8 +2,8 @@ import 'package:backend_flutterando/src/cores/services/bcrypt/bcrypt_service.dar
 import 'package:backend_flutterando/src/cores/services/bcrypt/bcrypt_service_impl.dart';
 import 'package:backend_flutterando/src/cores/services/dot_env/dot_env_service.dart';
 import 'package:backend_flutterando/src/cores/services/database/postgres/postgres_database.dart';
-import 'package:backend_flutterando/src/features/swagger/swagger_handler.dart';
-import 'package:backend_flutterando/src/features/user/user_resource.dart';
+import 'package:backend_flutterando/src/cores/features/swagger/swagger_handler.dart';
+import 'package:backend_flutterando/src/cores/features/user/user_resource.dart';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf_modular/shelf_modular.dart';

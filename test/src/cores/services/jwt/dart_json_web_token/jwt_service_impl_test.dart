@@ -6,7 +6,6 @@ void main() {
   test('JWT create ', () async {
    final dotEnvService = DotEnvService(mocks: {
     'JWT_KEY': 'kdjaflçkjdsflç sjfdslçkfjdlskjf'
-
    });
 
    final jwt = JwtServiceImpl(dotEnvService);
